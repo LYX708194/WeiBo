@@ -1,0 +1,137 @@
+@charset "UTF-8";
+body{
+   background:url('/WeiBo/image/background.jpg')  no-repeat center center;
+   background-size:cover;
+   background-attachment:fixed;
+    background-color: #daecda;
+}
+*{
+			margin:0;
+			padding:0;/*清除内外边距*/
+		}
+		ul{
+			list-style:none;/*去掉列表中的样式的小点*/
+		}
+		.clearfix:before,.clear:after{/*清除浮动*/
+			display:table;
+			content:"";
+		}
+		.clearfix:after{
+			clear:both;
+		}
+		.clearfix{
+			*zoom:1;
+		}
+		a{
+			color:#FFFFFF;
+			text-decoration: none;/*取消下划线*/
+		}
+		#first_menu{		
+			height:22px;
+			background-color: #545652;
+			border-top:3px solid #545652;/* 上边框 */
+			border-bottom: 3px solid #545652;/* 下边框 */
+		}
+		#portrait{
+			margin: 2px 6px 8px 50px;/*设置外边距*/
+			float:right;
+		}
+		#first_menu a{
+		    float:right;/*右对齐*/ 
+			font-family: 5px;
+			color:#d5d5d5;
+			text-decoration:none;
+			padding:8px 12px;/*上下是0，左右是15*/ 
+			height:5px;
+			line-height:5px;/*行高等于高度可以文字垂直居中*/
+			display:inline-block;/*显示成盒子大小*/
+		}
+		#first_menu a:hover{/*鼠标经过a链接*/
+			background-color: #001D26;
+		}
+		/*带有图标的第二个导航栏*/
+		#second{
+			height:100px;
+			overflow:hidden;/*防止外边距合并的问题*/
+				background-color: #edf4ed;/*设置背景颜色*/
+				margin-bottom:50px;/*下方的空白处*/
+				opacity:0.9;  /*设置透明度*/
+		}
+		#down{
+			width:1040px;
+			height:35px;
+			background-color:white;
+			margin:8px auto;
+			opacity:0.5;  /*设置透明度*/
+		}
+		#second_menu{
+			width: 1040px;
+			height:58px;
+			margin:8px 8px;
+			opacity:0.9;  /*设置透明度*/
+		}
+		.logo{
+			float:left;
+			margin-right:50px;/*与右边的选项框相距50个像素*/
+		}
+		/*导航栏的选项*/
+		.navbar{
+			float:left;
+			height:30px;
+			line-height:30px;
+			margin: 15px 0px 15px 30px;/*设置外边距*/
+		}
+		.navbar li{
+			float:left;/*使排列成一行*/
+		}
+		.navbar li a{
+			font-family: 33px;/*字体*/
+			color:#072;
+			text-decoration:none;
+			padding:0 15px;/*上下是0，左右是15*/ 
+			height:30px;
+			line-height:30px;/*行高等于高度可以文字垂直居中*/
+			display:inline-block;/*显示成盒子大小*/
+		}
+		.navbar li a:hover{/*鼠标经过a链接*/
+			background-color: #6dbc65;/*显示的颜色*/
+		}
+		/*放置主要的页面内容*/
+		#main_content{
+			width: 1040px;
+		    height: 500px;
+		    border-radius: 5px;
+		    margin: auto 239.600px;
+		    background-color: #e1dbdb;
+		    opacity:0.8;  /*设置透明度*/
+		}
+		.formMsg{
+			font-size:25px;
+		}
+		#submitPhoto,#submitInfo{
+			display:inline-block;/*显示成盒子大小*/
+			background-color:#808080 ;
+			width:70px;
+			height:30px;
+		}
+	input{
+			border:0;/*将input的边框改为0*/
+			box-sizing:border-box;
+			font:50px;
+		}		
+		#welcome_msg{
+			    margin: 5px 53px;
+		}
+		/*用户头像*/
+		#user_img{
+		    border-radius: 8px;
+		    width:200px;
+		    height:200px;
+		    margin-left: 50px;
+    		margin-top: 30px;
+		}
+		#usershow,#userphoto{
+			MARGIN: 30px 56px;
+		}
+		
+		
