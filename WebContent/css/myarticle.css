@@ -1,0 +1,218 @@
+@charset "UTF-8";
+@charset "UTF-8";
+/*我的主页的样式*/
+body{
+   background:url('/WeiBo/image/background.jpg')  no-repeat center center;
+   background-size:cover;
+   background-attachment:fixed;
+    background-color: #daecda;
+}
+*{
+			margin:0;
+			padding:0;/*清除内外边距*/
+		}
+		ul{
+			list-style:none;/*去掉列表中的样式的小点*/
+		}
+		
+		.clearfix:before,.clear:after{/*清除浮动*/
+			display:table;
+			content:"";
+		}
+		.clearfix:after{
+			clear:both;
+		}
+		.clearfix{
+			*zoom:1;
+		}
+		a{
+			color:#FFFFFF;
+			text-decoration: none;/*取消下划线*/
+		}
+		input{
+			border:0;/*将input的边框改为0*/
+			box-sizing:border-box;
+		}		
+		/*顶部的导航栏*/
+		#first_menu{		
+			height:22px;
+			background-color: #545652;
+			border-top:3px solid #545652;/* 上边框 */
+			border-bottom: 3px solid #545652;/* 下边框 */
+		}
+		#link{
+			font :20px;
+			margin-left:30px ;
+			display:inline-block;
+			float:center;
+		}
+		#portrait{
+			margin: 2px 6px 8px 50px;/*设置外边距*/
+			float:right;
+		}
+		#first_menu a{
+		    float:right;/*右对齐*/ 
+			font-family: 5px;
+			color:#d5d5d5;
+			text-decoration:none;
+			padding:8px 12px;/*上下是0，左右是15*/ 
+			height:5px;
+			line-height:5px;/*行高等于高度可以文字垂直居中*/
+			display:inline-block;/*显示成盒子大小*/
+		}
+		#first_menu a:hover{/*鼠标经过a链接*/
+			background-color: #001D26;
+		}
+		/*带有图标的第二个导航栏*/
+		#second{
+			height:135px;
+			overflow:hidden;/*防止外边距合并的问题*/
+				background-color: #edf4ed;/*设置背景颜色*/
+				margin-bottom:50px;/*下方的空白处*/
+				opacity:0.9;  /*设置透明度*/
+		}
+		#down{
+			width:1040px;
+			height:35px;
+			background-color:white;
+			margin:8px auto;
+			opacity:0.8;  /*设置透明度*/
+		}
+		#second_menu{
+			width: 1040px;
+			height:58px;
+			margin:8px auto;
+			opacity:0.9;  /*设置透明度*/
+		}
+		.logo{
+			float:left;
+			margin-right:50px;/*与右边的选项框相距50个像素*/
+		}
+		/*导航栏的选项*/
+		.navbar,{
+			float:left;
+			height: 30px;
+			line-height: 30px;
+			margin:  40px 0px 0px 0px;/*设置外边距*/
+		}
+		.navbar li{
+			float:left;/*使排列成一行*/
+		}
+		.navbar li a{
+			font-family: 60px;/*字体*/
+			color:#072;
+			text-decoration:none;
+			padding:0 15px;/*上下是0，左右是15*/ 
+			margin-top:30px;
+			height:40px;
+			line-height:40px;/*行高等于高度可以文字垂直居中*/
+			display:inline-block;/*显示成盒子大小*/
+		}
+		.button li a{
+			color:#ffffff;
+			padding:0 30px;
+			margin-left:15px;
+			margin-right:10px;
+		}
+		.button li{
+			padding:0 15px;
+			margin:0 15px;
+		}
+		.navbar li a:hover{/*鼠标经过a链接*/
+			background-color: #6dbc65;/*显示的颜色*/
+		}
+		
+		/*搜索框外框部分--用来使搜索框排列在一行*/
+		.search{
+			float:right;
+			height:30px;
+			line-height:30px;/*行高会继承 父类*/
+			margin-left:50px;/*与左边的logo相距50个像素*/
+			margin-top:35px;/*与顶部边相距15个像素*/	
+		}
+		/*搜索栏*/
+    	.search input[type=text]{/*选择type属性为text的文本框,无搜索键*/
+			width:249px;
+			height:30px;
+			padding-left:15px;/*搜索框中的文字与左保持15px距离*/
+		} 
+		.search input[type=submit]{/*搜索的按钮*/
+			width:50px;
+			height:30px;
+				background: #c0c0c0url() center center no-repeat;
+				background-size:15px 15px;
+		}
+		/*放置主要的页面内容*/
+		#main_content{
+			width: 1040px;
+		    height: 500px;
+		    border-radius: 5px;
+		    margin: auto 239.600px;
+		    background-color: #e1dbdb;
+		    opacity:0.8;  /*设置透明度*/
+		}
+		/*欢迎消息*/
+		#welcome_msg{
+			    margin: 5px 5px;
+		}
+		/*用户头像*/
+		#user_img{
+		    border-radius: 0px;
+		    width:100px;
+		    height:100px;
+		    margin-left: 0px;
+    		margin-top: 0px;
+		}
+		.show{
+			width:1040px;
+			height: auto;
+			margin:8px auto;
+			background-color: #e1dbdb;
+			opacity:0.8;  /*设置透明度*/
+		}
+		.item{
+			margin-top:10px;
+			margin-left:10px;
+		}
+		.left{
+			margin-left:20px;
+			margin-top:15px;
+		}
+		.author-img{
+			width:1040px;
+			height: 40px;
+			margin:auto 0px;
+		}
+		.comtent{
+			width:1040px;
+		}
+		.button{
+			width:1040px;
+			height: 20px;
+			float:left;
+			line-height:30px;
+			margin: 40px 0px 0px 0px;/*设置外边距*/
+		}
+		#paging{
+		width:1024px;
+		margin-top:10px;
+		margin-buttom:10px;
+		margin-right:10px;
+		}
+		#paging a{
+			color:balck;
+			font-size:20px;	
+		}
+		#page_number{
+		margin-right:20px;
+		}
+		/*分页的超链接*/
+		.page_controller{
+		color:black;
+		background-color:orange;
+		}
+		.header{
+			hight:40px;
+			margin-top:10px;
+		}
+		

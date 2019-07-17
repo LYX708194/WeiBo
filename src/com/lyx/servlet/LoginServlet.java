@@ -65,7 +65,6 @@ public class LoginServlet extends HttpServlet {
 			//取出此用户的全部信息，放入session中
 			user = us.userInfo(username);
 			request.getSession().setAttribute("userInfo", user);
-			System.out.println(user);
 			//记住密码的操作
 			if(request.getParameter("remember") != null) {  //根据input标签的name属性值取value属性值
 				//勾选了记住密码

@@ -4,19 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.lyx.dao.UserDao;
 import com.lyx.entity.User;
 import com.lyx.util.DbUtil;
 
 public class UserDaoImpl implements UserDao{
-	
-//	public static void main(String[] args) {
-//		User user = new User();
-//		UserDaoImpl ud = new UserDaoImpl();
-//		user = ud.emailInfo("1017551303@qq.com");
-//		System.out.println(user.getPassword());
-//	}
+
 	
 	/**
 	 * 用户登录，连接数据库，成功返回用户的状态值
@@ -273,7 +269,41 @@ public class UserDaoImpl implements UserDao{
 		return false;
 	}
 
-
+	@Override
+	public List<User> queryUser(String searchMsg) {
+		List<User> users = new ArrayList<User>();
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			String sql = "select * from user where username = ? or nickname = ?" ;
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%"+searchMsg+ "%");
+			pstmt.setString(2, "%"+searchMsg+ "%");
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				User user = new User();
+				user.setUserId(rs.getInt("userid"));
+				user.setUsername(rs.getString("username"));  
+				user.setPassword(rs.getString("password"));
+				user.setPortrait(rs.getString("portrait"));	  								//头像的地址
+				user.setEmail(rs.getString("email"));	  										//注册的邮箱
+				user.setTime(rs.getString("time"));                								//微博注册时间
+				user.setNickname(rs.getString("nickname"));							//昵称
+				user.setSignature(rs.getString("signature"));							//个性签名
+				user.setSelfIntroduction(rs.getString("selfintroduction"));    //自我简介
+				user.setAddress(rs.getString("address"));									//家庭地址
+				
+				users.add(user);   
+			}
+			return users;   
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(rs, pstmt, con);
+		} 	
+		return null;
+	}
 	
 
 }

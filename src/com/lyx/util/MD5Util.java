@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 public class MD5Util {
 	
 		public static void main(String[] args) {
-			String admin = MD5Encode("admin", "utf-8");
+			String admin = MD5Encode("dgqb708194", "utf-8");
 			System.out.println(admin);
 		}
 		

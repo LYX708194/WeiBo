@@ -18,7 +18,9 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.lyx.entity.Article;
 import com.lyx.entity.User;
+import com.lyx.service.ArticleEditService;
 import com.lyx.service.UserService;
 
 /**
@@ -31,6 +33,8 @@ public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     UserService us = new UserService();
     User user = new User();
+    Article article = new Article();
+    ArticleEditService aes = new ArticleEditService();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//设置请求和响应编码	
@@ -55,7 +59,7 @@ public class UploadServlet extends HttpServlet {
 						FileItem  item = iter.next(); 
 						//判断表单字段是文件字段还是普通form表单字段
 						if(item.isFormField()) {    //普通表单字段
-							
+								//此类只处理上传文件的form表单，故不会有普通表单字段的处理
 						}else {   //文件表单字段
 							//文件上传
 							// getFieldName是获取 普通表单字段的name值item.getFieldName()
@@ -75,17 +79,28 @@ public class UploadServlet extends HttpServlet {
 							//得到session对象
 							HttpSession session = request.getSession();
 							
-							user = (User) session.getAttribute("userInfo");
-							//添加文件路径到userInfo中
-							user.setPortrait("/upload/"+fileName);
-//							System.out.println(user);
-							//连接数据库修改路径
-							if(us.updatePortrait(user) ) { //如果修改成功
-								//将session的userInfo修改
-								session.setAttribute("userInfo", user);
-								// 修改完成后跳转到个人信息的界面
-								request.getRequestDispatcher("/jsp/self.jsp").forward(request, response);
+							String method = request.getParameter("method");  //获得method参数
+							//如果method参数为空，则为用户头像上传
+							if(method==null||"".equals(method)) {
+								user = (User) session.getAttribute("userInfo");
+								//添加文件路径到userInfo中
+								user.setPortrait("/upload/"+fileName);
+//								System.out.println(user);
+								//连接数据库修改路径
+								if(us.updatePortrait(user) ) { //如果修改成功
+									//将session的userInfo修改
+									session.setAttribute("userInfo", user);
+									// 修改完成后跳转到个人信息的界面
+									request.getRequestDispatcher("/jsp/self.jsp").forward(request, response);
+								}
+								
+							}else {  //否则为微博文章提交照片
+								request.setAttribute("articlephoto", "/upload/"+fileName); //获得图片路径放入request域中
+								request.getRequestDispatcher("/jsp/articleEdit.jsp").forward(request, response);
+								
 							}
+							
+							
 							
 						}
 						

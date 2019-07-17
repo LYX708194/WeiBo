@@ -34,7 +34,7 @@ public class RegisterServlet extends HttpServlet {
 		String pwd1 = request.getParameter("upwd1");
 		//将密码MD5加密
 		String pwd = MD5Util.MD5Encode(pwd1, "utf-8");
-		String time = DateUtil.getDate();    //得到注册时间
+		String time = DateUtil.getDateToDate();    //得到注册时间，只到日期
 		
 		user.setUsername(username);
 		user.setPassword(pwd);

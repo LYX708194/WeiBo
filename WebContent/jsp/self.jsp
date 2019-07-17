@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>微博/我的主页</title>
+<title>微博|我的主页</title>
 <!-- 登录成功后，进行个人信息的查看 -->
 	<!-- 我的页面的样式 -->
  <link rel="stylesheet" type="text/css" href="/WeiBo/css/self.css">
@@ -20,10 +20,10 @@
 					<a href="#">我的关注</a>
 					<a href="#">我的粉丝</a>
 					<!-- 先跳转servlet 查询第一页的所有人信息 -->
-					<!-- 编辑文章 --><!-- target属性可以指定窗口 -->
-					<a href="#" target="_blank">写微博</a>
-					<a href="#" >我的微博</a>
-					<a href="#">我的收藏</a> 
+					<!-- 编辑文章 -->
+					<a href="/WeiBo/jsp/articleEdit.jsp" >写微博</a>
+					<a href="/WeiBo/ArticleShowServlet?method=my" >我的微博</a>
+					<a href="/WeiBo/ArticleShowServlet?method=showMyCollect">我的收藏</a> 
 				</div>
 			</nav>
 			<!-- 第二个导航栏 -->
@@ -46,12 +46,12 @@
 									<li><a href="#">消息</a></li>
 									<li><a href="/WeiBo/jsp/update.jsp">修改个人信息</a></li>
 									<li><a href="/WeiBo/jsp/updatePwd.jsp">修改密码</a></li>
-									<li><a href="#">发现微博</a></li>
+									<li><a href="/WeiBo/ArticleShowServlet?method=all&currentPage=1">发现微博</a></li>
 								</ul>	
 							</div>
 							<!-- 搜索框部分 -->
 							<div class="search">
-									<form action="">
+									<form action="ArticleShowServlet?method=searchAll&currentPage=1">
 										<input type="text" placeholder="搜索你感兴趣的内容和人">
 										<input  type="submit" value="搜索">
 									</form>

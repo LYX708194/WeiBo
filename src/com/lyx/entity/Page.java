@@ -1,5 +1,7 @@
 package com.lyx.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 分页的辅助类，用于封装分类的属性，
@@ -10,16 +12,32 @@ public class Page {
 		//总页数
 		private int totalPage;
 		//页面大小，即页面显示的数据数量
-		private int pageSize;
+		private int pageSize = 10;    //默认每页10条数据    
 		//总数据量
 		private int totalCount;
 		//当前页
 		private int currentPage;
+		//存放查询到的数据集合
+		private List<Article>  object = new ArrayList<Article>();
 		
 				
-		public Page(int totalPage, int pageSize, int totalCount, int currentPage) {
+		
+		//构造器
+		public Page(int totalPage, int pageSize, int totalCount, int currentPage, List<Article> object) {
 			super();
 			this.totalPage = totalPage;
+			this.pageSize = pageSize;
+			this.totalCount = totalCount;
+			this.currentPage = currentPage;
+			this.object = object;
+		}
+		public Page(int pageSize, int totalCount, int currentPage) {
+			super();
+			if(this.totalCount< this.pageSize) {
+				this.totalPage = 1;
+			}else {
+				this.totalPage = this.totalCount % this.pageSize ==0 ? this.totalCount/this.pageSize : this.totalCount/this.pageSize +1   ;
+			}
 			this.pageSize = pageSize;
 			this.totalCount = totalCount;
 			this.currentPage = currentPage;
@@ -31,8 +49,12 @@ public class Page {
 		public int getTotalPage() {
 			return totalPage;
 		}
-		public void setTotalPage(int totalPage) {
-			this.totalPage = totalPage;
+		public void setTotalPage(int totalCount ,int pageSize) {
+			if(totalCount< pageSize) {
+				this.totalPage = 1;
+			}else {
+				this.totalPage = totalCount %pageSize ==0 ? totalCount/pageSize : totalCount/pageSize +1   ;
+			}
 		}
 		public int getPageSize() {
 			return pageSize;
@@ -52,6 +74,19 @@ public class Page {
 		public void setCurrentPage(int currentPage) {
 			this.currentPage = currentPage;
 		}
-	
+		public List<Article> getObject() {
+			return object;
+		}
+		public void setObject(List<Article> articleList) {
+			this.object = articleList;
+		}
+		
+		@Override
+		public String toString() {
+			return "Page [totalPage=" + totalPage + ", pageSize=" + pageSize + ", totalCount=" + totalCount
+					+ ", currentPage=" + currentPage + "]";
+		}
+		
+		
 		
 }

@@ -1,6 +1,8 @@
 package com.lyx.dao;
 
 
+import java.util.List;
+
 import com.lyx.entity.User;
 
 public interface UserDao {
@@ -67,5 +69,12 @@ public interface UserDao {
 		 * @return 返回真表示存在，假为不存在
 		 */
 		public boolean repetitionEmail(String email);
+		
+		/**
+		 * 查找数据库中用户，模糊搜索字段
+		 * @param searchMsg
+		 * @return 返回一个对象集合
+		 */
+		public List<User> queryUser(String searchMsg);
 		
 }
