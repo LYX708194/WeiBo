@@ -9,6 +9,9 @@ import com.lyx.dao.ArticleEditDao;
 import com.lyx.entity.Article;
 import com.lyx.entity.ArticleLike;
 import com.lyx.entity.Collect;
+import com.lyx.entity.Comment;
+import com.lyx.entity.Reply;
+import com.lyx.util.DateUtil;
 import com.lyx.util.DbUtil;
 
 public class ArticleEditDaoImpl implements ArticleEditDao{
@@ -100,6 +103,73 @@ public class ArticleEditDaoImpl implements ArticleEditDao{
 		}finally {
 			DbUtil.close(rs, pstmt, con);
 		} 
+		return false;
+	}
+	
+	@Override
+	public int queryStar(Article article) {
+		int star = -1;
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;		
+		try {
+			String sql = "select star from article where articleid = ? " ;
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, article.getArticleId());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				star = rs.getInt(1);
+			}
+			return star;   
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(rs, pstmt, con);
+		} 
+		return star;
+	}
+	
+	@Override
+	public boolean upArticle(Article article) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "update article set star = ? where articleid = ?"  ;  
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, 1);  					 //将星标状态修改为1
+			pstmt.setInt(2, article.getArticleId());
+			int result = pstmt.executeUpdate();
+			if(result>0) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(pstmt, con);
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean downArticle(Article article) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "update article set star = ? where articleid = ?"  ;  
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, 0); 				  //将星标状态修改为0
+			pstmt.setInt(2, article.getArticleId());
+			int result = pstmt.executeUpdate();
+			if(result>0) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(pstmt, con);
+		}
 		return false;
 	}
 	
@@ -324,6 +394,212 @@ public class ArticleEditDaoImpl implements ArticleEditDao{
 		}
 		return false;
 	}
+
+	@Override
+	public boolean articleComment(Article article) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "update article set commentnum = ? where articleid = ?"  ;  //通过微博文章的id增加评论数
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, article.getCommentNum()+1);  //评论数+1
+			pstmt.setInt(2, article.getArticleId());
+			int result = pstmt.executeUpdate();
+			if(result>0) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(pstmt, con);
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean articleUnComment(Article article) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "update article set commentnum = ? where articleid = ?"  ;  //通过微博文章的id减少评论数
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, article.getCommentNum()-1);  //评论数-1
+			pstmt.setInt(2, article.getArticleId());
+			int result = pstmt.executeUpdate();
+			if(result>0) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(pstmt, con);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean insertComment(Comment comment) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "insert into comment(articleid,username,commentmsg,commenttime) values(?,?,?,?)"  ;  //插入comtent表评论的信息
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, comment.getArticleId());
+			pstmt.setString(2, comment.getUsername());
+			pstmt.setString(3, comment.getCommentMsg());
+			pstmt.setString(4, DateUtil.getDateToSecond());  //获得当前时间并装入数据库中
+			int result = pstmt.executeUpdate();
+			if(result>0) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(pstmt, con);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteComment(Comment comment) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "delete from comment where commentid = ?"  ;  //通过评论的id删除
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, comment.getCommentId());
+			int result = pstmt.executeUpdate();
+			if(result>0) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(pstmt, con);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean articleDeleteComment(Article article) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "update article set commentnum = ? where articleid = ?"  ;  //通过微博文章的id减少评论数
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, article.getCommentNum()-1);  //评论数-1
+			pstmt.setInt(2, article.getArticleId());
+			int result = pstmt.executeUpdate();
+			if(result>0) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(pstmt, con);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean queryComment(int commentId) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;		
+		try {
+			String sql = "select * from comment where commentid = ? " ;
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, commentId);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return true;   
+			}
+			return false;   
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(rs, pstmt, con);
+		} 
+		return false;
+	}
+
+	@Override
+	public boolean insertReply(Reply reply) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "insert into reply(articleid,commentid,bereplyusername,replyusername,replymsg,replytime) values(?,?,?,?,?,?)"  ;  //插入reply表回复的信息
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, reply.getArticleId());
+			pstmt.setInt(2, reply.getCommentId());
+			pstmt.setString(3, reply.getBeReplyUsername());
+			pstmt.setString(4, reply.getReplyUsername());
+			pstmt.setString(5, reply.getReplyMsg());
+			pstmt.setString(6, DateUtil.getDateToSecond());  //获得当前时间
+			int result = pstmt.executeUpdate();
+			if(result>0) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(pstmt, con);
+		}
+		return false;
+	}
+	
+	
+	@Override
+	public boolean deleteReply(Reply reply) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "delete from reply where replyid = ?"  ;  //通过replyid删除回复
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, reply.getReplyId());
+			int result = pstmt.executeUpdate();
+			if(result>0) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(pstmt, con);
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean queryReply(Reply reply) {
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;		
+		try {
+			String sql = "select * from reply where replyid = ? " ;
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, reply.getReplyId());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return true;   
+			}
+			return false;   
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(rs, pstmt, con);
+		} 
+		return false;
+	}
+	
+	
+	
 	
 	
 }

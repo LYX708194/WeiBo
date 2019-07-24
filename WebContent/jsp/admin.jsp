@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>微博/管理员主页</title>
+<title>微博|管理员主页</title>
 </head>
 <body>
 	管理员

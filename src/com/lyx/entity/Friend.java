@@ -12,7 +12,7 @@ public class Friend {
 		 */
 		private String toUsername;
 		/**
-		 * 状态量，默认值为1，表示A关注B，2表示AB互粉，3表示B为A的黑名单
+		 * 状态量，默认值为1，表示A关注B，2表示AB互粉
 		 */
 		private int status = 1;
 		
@@ -54,6 +54,11 @@ public class Friend {
 			this.fromUsername = fromUsername;
 			this.toUsername = toUsername;
 			this.status = status;
+		}
+		@Override
+		public String toString() {
+			return "Friend [friendId=" + friendId + ", fromUsername=" + fromUsername + ", toUsername=" + toUsername
+					+ ", status=" + status + "]";
 		}
 		
 		

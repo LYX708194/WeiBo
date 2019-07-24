@@ -84,7 +84,19 @@ public class ArticleShowService {
 			return null;
 		}
 		
-		
+		/**
+		 * 得到被设置为热搜的文章
+		 * @param page
+		 * @param user
+		 * @return 成功返回一个对象集合，失败返回空
+		 */
+		public List<Article> queryStarArticle(Page page,User user){
+			page.setTotalCount(asd.getStarArticleCount());
+			if(page.getCurrentPage()!=0) {
+				return asd.queryStarArticle(page, user);
+			}
+			return null;
+		}
 		
 		
 }

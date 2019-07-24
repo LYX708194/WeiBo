@@ -5,6 +5,8 @@ import com.lyx.daoImpl.ArticleEditDaoImpl;
 import com.lyx.entity.Article;
 import com.lyx.entity.ArticleLike;
 import com.lyx.entity.Collect;
+import com.lyx.entity.Comment;
+import com.lyx.entity.Reply;
 
 /**
  * 编辑微博文章的逻辑处理
@@ -40,6 +42,30 @@ public class ArticleEditService {
 			}else {
 				return false;  //查不到这篇文章，删除失败
 			}
+		}
+		
+		/**
+		 * 设置为热搜
+		 * @param article
+		 * @return 成功返回真，失败返回假
+		 */
+		public boolean upArticle(Article article) {
+			if(aed.articleQuery(article)) {
+				return aed.upArticle(article);
+			}
+			return false;
+		}
+		
+		/**
+		 * 取消设置热搜
+		 * @param article
+		 * @return 成功返回真，失败返回假
+		 */
+		public boolean downArticle(Article article) {
+			if(aed.articleQuery(article)) {
+				return aed.downArticle(article);
+			}
+			return false;
 		}
 		
 		/**
@@ -109,10 +135,67 @@ public class ArticleEditService {
 				if(aed.articleUnCollect(article)&&aed.deleteCollect(collect, username)) {
 					return true;   //更新收藏数和删除收藏表信息
 				}
-			}else {
-				return false;
 			}
 			return false;
 		}
+		
+		/**
+		 * 对微博执行评论的操作，分别向两个表中增加信息
+		 * @param comtent
+		 * @param artilce
+		 * @return 成功返回真，失败返回假
+		 */
+		public boolean insertComment(Comment comment,Article artilce ) {
+			if(aed.insertComment(comment)) {
+				
+				return aed.articleComment(artilce);
+			}			
+			return false;
+		}
+		
+		/**
+		 * 删除评论的操作，对两个表进行评论的删除和更新处理
+		 * @param comtent
+		 * @param artilce
+		 * @return 成功返回真，失败返回假
+		 */
+		public boolean deleteComment(Comment comment,Article artilce) {
+			if(aed.queryComment(comment.getCommentId())) {
+				if(aed.deleteComment(comment)) {
+					return aed.articleDeleteComment(artilce);
+				}
+			}
+			return false;
+		}
+		
+		/**
+		 * 插入回复并增加评论数
+		 * @param reply
+		 * @param article
+		 * @return 成功返回真，失败返回假
+		 */
+		public boolean insertReply(Reply reply,Article article) {
+			if(aed.insertReply(reply)&&aed.articleComment(article)) {
+				return true;
+			}
+			return false;
+		}
+		
+		/**
+		 * 删除回复并较少评论数
+		 * @param reply
+		 * @param article
+		 * @return 成功返回真，失败返回假
+		 */
+		public boolean deleteReply(Reply reply,Article article) {
+			if(aed.queryReply(reply)) {
+				if(aed.deleteReply(reply)&&aed.articleUnComment(article)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		
 		
 }

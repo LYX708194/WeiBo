@@ -13,6 +13,13 @@ import com.lyx.entity.User;
  *
  */
 public interface ArticleShowDao {
+	
+		/**
+		 * 通过articleid获得整个文章的信息
+		 * @param articleId
+		 * @return 
+		 */
+		public Article getArticleByArticleId(int articleId);
 		
 		/**
 		 * 查询列表的总数据数 article
@@ -39,6 +46,12 @@ public interface ArticleShowDao {
 		 * @return 返回符合搜索条件的微博总数
 		 */
 		public int getArticleSearchCount(String searchComtent);
+		
+		/**
+		 * 获得热搜的微博数量
+		 * @return
+		 */
+		public int getStarArticleCount();
 		
 		/**
 		 * 分页搜素所有微博，管理员或者发现微博页面的查询
@@ -77,6 +90,14 @@ public interface ArticleShowDao {
 		 * @return 返回符合条件的对象集合
 		 */
 		public List<Article> queryMyCollectArticle(Page page,User user);
+		
+		/**
+		 * 搜索热搜的微博文章
+		 * @param page
+		 * @return 返回一个对象集合
+		 */
+		public List<Article> queryStarArticle(Page page, User user);
+		
 		
 		
 }

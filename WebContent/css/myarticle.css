@@ -55,7 +55,7 @@ body{
 			font-family: 5px;
 			color:#d5d5d5;
 			text-decoration:none;
-			padding:8px 12px;/*上下是0，左右是15*/ 
+			padding:8px 12px;
 			height:5px;
 			line-height:5px;/*行高等于高度可以文字垂直居中*/
 			display:inline-block;/*显示成盒子大小*/

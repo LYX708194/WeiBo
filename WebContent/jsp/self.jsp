@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>    <!-- jstl --> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,8 +18,12 @@
 					<!-- 跳到servlet，对用户的cookie进行注销 -->
 				    <a  href="/WeiBo/ClearLoginServlet">退出登录</a>
 					<a  href="/WeiBo/jsp/self.jsp">个人信息</a>
-					<a href="#">我的关注</a>
-					<a href="#">我的粉丝</a>
+					<a href="/WeiBo/UserShowServlet?method=myfocus">我的关注</a>
+					<a href="/WeiBo/UserShowServlet?method=myfans">我的粉丝</a>
+					<!-- 如果为管理员，则可查看所有人，进行操作 -->
+					<c:if test='${sessionScope.userInfo.username=="admin"}'>
+					<a href="/WeiBo/UserShowServlet?method=all" >所有用户</a>
+					</c:if>
 					<!-- 先跳转servlet 查询第一页的所有人信息 -->
 					<!-- 编辑文章 -->
 					<a href="/WeiBo/jsp/articleEdit.jsp" >写微博</a>
@@ -47,12 +52,13 @@
 									<li><a href="/WeiBo/jsp/update.jsp">修改个人信息</a></li>
 									<li><a href="/WeiBo/jsp/updatePwd.jsp">修改密码</a></li>
 									<li><a href="/WeiBo/ArticleShowServlet?method=all&currentPage=1">发现微博</a></li>
+									<li><a href="/WeiBo/ArticleShowServlet?method=star">热搜</a></li>
 								</ul>	
 							</div>
 							<!-- 搜索框部分 -->
 							<div class="search">
 									<form action="ArticleShowServlet?method=searchAll&currentPage=1">
-										<input type="text" placeholder="搜索你感兴趣的内容和人">
+										<input type="text" placeholder="搜索你感兴趣的内容" id="searchComtent" name="searchComtent">
 										<input  type="submit" value="搜索">
 									</form>
 							</div>

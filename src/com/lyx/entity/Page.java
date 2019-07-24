@@ -17,19 +17,25 @@ public class Page {
 		private int totalCount;
 		//当前页
 		private int currentPage;
-		//存放查询到的数据集合
+		//存放查询到的文章集合
 		private List<Article>  object = new ArrayList<Article>();
+		//存放查询到的用户集合
+		private List<User>   users = new ArrayList<User>();
+		//存放查询到的评论集合
+		private List<Comment> comments = new ArrayList<Comment>();
 		
 				
 		
 		//构造器
-		public Page(int totalPage, int pageSize, int totalCount, int currentPage, List<Article> object) {
+		public Page(int totalPage, int pageSize, int totalCount, int currentPage, List<Article> object,List<User> users,List<Comment> comments) {
 			super();
 			this.totalPage = totalPage;
 			this.pageSize = pageSize;
 			this.totalCount = totalCount;
 			this.currentPage = currentPage;
 			this.object = object;
+			this.users = users;
+			this.comments = comments;
 		}
 		public Page(int pageSize, int totalCount, int currentPage) {
 			super();
@@ -80,7 +86,18 @@ public class Page {
 		public void setObject(List<Article> articleList) {
 			this.object = articleList;
 		}
-		
+		public List<User> getUsers() {
+			return users;
+		}
+		public void setUsers(List<User> users) {
+			this.users = users;
+		}
+		public List<Comment> getComments() {
+			return comments;
+		}
+		public void setComments(List<Comment> comments) {
+			this.comments = comments;
+		}
 		@Override
 		public String toString() {
 			return "Page [totalPage=" + totalPage + ", pageSize=" + pageSize + ", totalCount=" + totalCount

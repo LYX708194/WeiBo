@@ -20,10 +20,13 @@ import com.lyx.daoImpl.UserDaoImpl;
 import com.lyx.entity.Article;
 import com.lyx.entity.ArticleLike;
 import com.lyx.entity.Collect;
+import com.lyx.entity.Comment;
 import com.lyx.entity.Page;
 import com.lyx.entity.User;
 import com.lyx.service.ArticleEditService;
 import com.lyx.service.ArticleShowService;
+import com.lyx.service.UserService;
+import com.lyx.util.DateUtil;
 
 /**
  * 微博文章展示的页面，根据传递的方法判断是展示我的微博还是全部微博
@@ -34,18 +37,21 @@ import com.lyx.service.ArticleShowService;
 public class ArticleShowServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
+	
 	ArticleShowService  ass = new ArticleShowService();
     ArticleEditService aes = new ArticleEditService();
     ArticleShowDao asd = new ArticleShowDaoImpl();
     ArticleEditDao aed = new ArticleEditDaoImpl();
     UserDao ud = new UserDaoImpl();
-
+    UserService us = new UserService();
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 
 		 request.setCharacterEncoding("utf-8");
 		 response.setCharacterEncoding("utf-8");
+		 
 	     HttpSession session = request.getSession();  //拿到session，获得当前登录用户的信息
 	     User user = (User) session.getAttribute("userInfo");  
+	     
 	     Article article = new Article();
 	     int currentPage = 1;
 	     //取得前端页面中的当前页的数据
@@ -56,6 +62,8 @@ public class ArticleShowServlet extends HttpServlet {
 			//将前端收到的当前页的数据转化为int类型赋给当前页
 			currentPage = Integer.parseInt(currentPageStr);
 		}
+		
+	
 		
 		
 		
@@ -92,6 +100,31 @@ public class ArticleShowServlet extends HttpServlet {
 					aes.insertCollect(collect, user.getUsername(), article) ;//收藏			
 				}		
 				
+			}	break;
+			case "comment":{
+				String commentMsg = request.getParameter("commentMsg");
+				Comment comment = new Comment();
+				System.out.println(commentMsg);
+				comment.setArticleId(articleId);
+				comment.setCommentMsg(commentMsg);
+				comment.setUsername(user.getUsername());
+				comment.setCommentTime(DateUtil.getDateToSecond());
+				if(aes.insertComment(comment, article)) {
+					request.setAttribute("commentSuccess", "评论成功");
+				}else {
+					request.setAttribute("commentSuccess", "评论失败");
+				}	
+			}	break;
+			case "star":{  //设为热搜
+				int star = aed.queryStar(article);
+				if(star==1) {  
+					//星标为1，则为取消热搜操作
+					aes.downArticle(article);
+				}
+				if(star==0) {	
+					//星标为0，则设置为热搜
+					aes.upArticle(article);
+				}
 			}	break;
 			default: break;
 			}	
@@ -198,13 +231,15 @@ public class ArticleShowServlet extends HttpServlet {
 				
 			}break;
 			case "other":{   //搜索其他人的微博
-				String username = request.getParameter("username");
+				String username = request.getParameter("thisUser");
 				User user1 = new User();
 				user1 = ud.userInfo(username);
+				int relation = us.getRelation(user.getUsername(), username);  //得到两人关系
+				user1.setRelation(relation);
 				request.setAttribute("user1", user1);  //将此微博的作者的个人信息放入request域中，通过点击可以查看他的个人信息
 				
-				user.setUsername(username);
-				int totalCount = asd.getMyTotalCount(user);
+				
+				int totalCount = asd.getMyTotalCount(user1);
 				if(totalCount==0) {
 					request.setAttribute("msg", "对不起，他还没有发过微博");
 				}else {
@@ -214,13 +249,27 @@ public class ArticleShowServlet extends HttpServlet {
 					page.setCurrentPage(currentPage);           					
 					//拿到数据集合，分页
 					List<Article> articleList = new ArrayList<Article>();
-					articleList = ass.queryMyArticleByPage(page, user);
+					articleList = ass.queryMyArticleByPage(page, user1);
 					
 					page.setObject(articleList);
 					//将数据传给request
 					request.setAttribute("p", page);
 				} 
 			}	break;
+			case "star":{		//搜索热搜文章
+				int totalCount = asd.getStarArticleCount();
+				if(totalCount==0) {
+					request.setAttribute("msg", "暂时还没有热搜微博");
+				}else {
+					Page page = new Page(5, totalCount, currentPage);
+					
+					List<Article> stars = new ArrayList<Article>();
+					stars = ass.queryStarArticle(page, user);
+					page.setObject(stars);
+					request.setAttribute("p", page);
+				}
+				
+			} 	break;
 
 			default:   break;
 			}

@@ -53,10 +53,8 @@ public class LoginServlet extends HttpServlet {
 		//获得用户的状态量
 		int status = us.login(user);
 		
-		if(status == 0) {  //管理员
-			//请求转发到管理员的jsp页面
-			request.getRequestDispatcher("/jsp/admin.jsp").forward(request, response);
-		}else if(status == 1) {   //普通用户
+		if(status == 0||status==1) {  //管理员和普通用户
+			
 			
 			//登录成功，将用户的username和密码放入session中
 			request.getSession().setAttribute("uname", username);
@@ -97,11 +95,11 @@ public class LoginServlet extends HttpServlet {
 			
 		}else if(status == 2) {  //被封号用户
 			// 保存错误信息到request中
-			request.setAttribute("msg", "对不起，此用户已被封号");
+			request.setAttribute("Msg", "对不起，此用户已被封号");
 			//请求转发到登录页面
 			request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
 		}else {  //status = 3,登录失败
-			request.setAttribute("msg", "登录失败");
+			request.setAttribute("Msg", "登录失败");
 			request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
 		}
 		

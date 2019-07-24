@@ -1,7 +1,6 @@
 package com.lyx.dao;
 
 
-import java.util.List;
 
 import com.lyx.entity.User;
 
@@ -71,10 +70,65 @@ public interface UserDao {
 		public boolean repetitionEmail(String email);
 		
 		/**
-		 * 查找数据库中用户，模糊搜索字段
-		 * @param searchMsg
-		 * @return 返回一个对象集合
+		 * 得到用户的信息，是否被封号
+		 * @param username
+		 * @return 返回1代表是普通用户，返回2代表被封号用户
 		 */
-		public List<User> queryUser(String searchMsg);
+		public int getUserStatus(String username);
+		
+		/**
+		 * 封号
+		 * @param username
+		 * @return 成功返回true，失败返回false
+		 */
+		public boolean setUserBlack(String username);
+		
+		/**
+		 * 解除封号
+		 * @param username
+		 * @return 成功返回true，失败返回false
+		 */
+		public boolean setUserOk(String username);
+		
+		/**
+		 * 搜索friend表中是否有此关系
+		 * @param fromUsername
+		 * @param toUsername
+		 * @return 有返回true，没有返回false
+		 */
+		public boolean queryFriend(String fromUsername,String toUsername);
+		
+		/**
+		 * 得到俩个用户之间的关系
+		 * @param fromUsername  关注人的用户名
+		 * @param toUsername	被关注人的用户名
+		 * @return 返回1代表前者关注后者，返回2代表二者互粉
+		 */
+		public int getRelation(String fromUsername,String toUsername);
+		
+		/**
+		 * 修改二者之间的关系，设置friend表中的状态值，设为1代表取消互粉状态，设为2代表设置二人为互粉状态
+		 * @param fromUsername
+		 * @param toUsername
+		 * @return 成功返回true，失败返回false
+		 */
+		public boolean updateRelation(String fromUsername,String toUsername,int status);
+		
+		/**
+		 * 关注操作
+		 * @param fromUsername 用户
+		 * @param toUsername 被关注的人
+		 * @return 成功返回true，失败返回false
+		 */
+		public boolean insertFriend(String fromUsername,String toUsername,int status);
+		
+		/**
+		 * 取消关注
+		 * @param fromUsername 用户
+		 * @param toUsername 被关注的人
+		 * @return 成功返回true，失败返回false
+		 */
+		public boolean deleteFriend(String fromUsername,String toUsername);
+		
 		
 }
