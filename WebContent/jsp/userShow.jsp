@@ -19,9 +19,9 @@
 					<a href="/WeiBo/UserShowServlet?method=myfocus">我的关注</a>
 					<a href="/WeiBo/UserShowServlet?method=myfans" >我的粉丝</a>
 					<!-- 如果为管理员，则可查看所有人，进行操作 -->
-					<c:if test='${sessionScope.userInfo.username=="admin"}'>
+					
 					<a href="/WeiBo/UserShowServlet?method=all" >所有用户</a>
-					</c:if>
+				
 					<!-- 先跳转servlet 查询第一页的所有人信息 -->
 					<!-- 编辑文章 -->
 					<a href="/WeiBo/jsp/articleEdit.jsp" >写微博</a>
@@ -46,7 +46,7 @@
 							<div class="navbar">
 								<ul>
 									<li><a href="/WeiBo/jsp/self.jsp">我的主页</a></li>
-									<li><a href="#">消息</a></li>
+									<li><a href="/WeiBo/MessageListServlet">消息</a></li>
 									<li><a href="/WeiBo/jsp/update.jsp">修改个人信息</a></li>
 									<li><a href="/WeiBo/jsp/updatePwd.jsp">修改密码</a></li>
 									<li><a href="/WeiBo/ArticleShowServlet?method=all">发现微博</a></li>
@@ -86,8 +86,8 @@
 								<div class = "usermsg"><!-- 展示用户信息，如昵称，地址，个性签名和关注关系等 -->
 									<ul>
 										<li> ${a.nickname } </li>
-										<li> 地址:：${a.address }  </li>
-										<li> 个性签名: ：${a.signature } </li>
+										<li> 地址：${a.address }  </li>
+										<li> 个性签名 ：${a.signature } </li>
 										<li>	 自我介绍：	${a.selfIntroduction }	</li>
 									</ul>
 								</div>
@@ -108,7 +108,7 @@
 									<c:if test="${a.status==1 }"><a href="UserShowServlet?method=${requestScope.method}&premethod=black&thisUser=${a.username}&currentPage=1"onclick= "return confirm('确定要对ta封号吗')">封号</a></c:if>
 									<c:if test="${a.status==2 }"><a href="UserShowServlet?method=${requestScope.method}&premethod=out&thisUser=${a.username}&currentPage=1"onclick= "return confirm('确定要解除ta的封号吗')">解除封号</a></c:if>
 									</c:if>
-									<a href="#" >发送私信</a>
+									<a href="SendMessageServlet?thisUser=${a.username }" >发送私信</a>
 								</div>
 							</div>
 						<hr>

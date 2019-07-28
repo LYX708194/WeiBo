@@ -7,8 +7,9 @@ import com.lyx.util.ValidateUtil;
 
 public class UserService {
 		 
-		
+	
 		private  UserDao ud = new UserDaoImpl();
+		
 		
 		
 		/**

@@ -110,7 +110,8 @@ public class OneArticleShowServlet extends HttpServlet {
 				comment.setCommentMsg(commentMsg);
 				comment.setUsername(user.getUsername());
 				comment.setCommentTime(DateUtil.getDateToSecond());
-				if(aes.insertComment(comment, article)) {
+				boolean rs = aes.insertComment(comment, article);
+				if(rs) {
 					request.setAttribute("commentSuccess", "评论成功");
 				}else {
 					request.setAttribute("commentSuccess", "评论失败");
@@ -130,8 +131,21 @@ public class OneArticleShowServlet extends HttpServlet {
 				}		
 				
 			}	break;
-			case "delete":{		//删除微博
-				aes.articleDelete(article);
+			case "delete":{		//删除微博，同时删除所有相关的东西
+				ArticleLike like = new ArticleLike();
+				like.setArticleId(articleId);
+				like.setUsername(user.getUsername());
+				Collect collect = new Collect();
+				collect.setArticleId(articleId);
+				collect.setUsername(user.getUsername());
+				Comment comment = new Comment();
+				comment.setArticleId(article.getArticleId());
+				
+				aes.deleteLike(like, user.getUsername(), article);//删除点赞	
+				aes.deleteCollect(collect, user.getUsername(), article);  //删除收藏
+				aes.deleteComment(comment, article);   //删除评论
+				
+				aes.articleDelete(article);		//删除文章
 			}	break;
 			case "reply":{  //回复评论
 				//获得表单传值的信息
@@ -169,6 +183,11 @@ public class OneArticleShowServlet extends HttpServlet {
 				
 				Comment comment = new Comment();
 				comment.setCommentId(commentId);
+				Reply reply = new Reply();
+				reply.setCommentId(commentId);
+				
+				
+				aes.deleteReply(reply, article);
 				
 				aes.deleteComment(comment, article);
 			}	break;

@@ -27,6 +27,7 @@ import com.lyx.service.ArticleEditService;
 import com.lyx.service.ArticleShowService;
 import com.lyx.service.UserService;
 import com.lyx.util.DateUtil;
+import com.lyx.util.HTMLUtil;
 
 /**
  * 微博文章展示的页面，根据传递的方法判断是展示我的微博还是全部微博
@@ -74,8 +75,21 @@ public class ArticleShowServlet extends HttpServlet {
 			int articleId = Integer.parseInt(request.getParameter("articleId"));  //将得到的文章id转化为int
 			article.setArticleId(articleId);
 			switch(preMethod) {
-			case "delete" :{  //删除文章
-					aes.articleDelete(article);
+			case "delete" :{  //删除文章，把与该文章有关的评论收藏都删除
+					ArticleLike like = new ArticleLike();
+					like.setArticleId(articleId);
+					like.setUsername(user.getUsername());
+					Collect collect = new Collect();
+					collect.setArticleId(articleId);
+					collect.setUsername(user.getUsername());
+					Comment comment = new Comment();
+					comment.setArticleId(article.getArticleId());
+					
+					aes.deleteLike(like, user.getUsername(), article);//删除点赞	
+					aes.deleteCollect(collect, user.getUsername(), article);  //删除收藏
+					aes.deleteComment(comment, article);   //删除评论
+					
+					aes.articleDelete(article);		//删除文章
 			}	break;
 			case "like" :{   //点赞
 					ArticleLike like = new ArticleLike();
@@ -109,7 +123,8 @@ public class ArticleShowServlet extends HttpServlet {
 				comment.setCommentMsg(commentMsg);
 				comment.setUsername(user.getUsername());
 				comment.setCommentTime(DateUtil.getDateToSecond());
-				if(aes.insertComment(comment, article)) {
+				boolean rs = aes.insertComment(comment, article);
+				if(rs) {
 					request.setAttribute("commentSuccess", "评论成功");
 				}else {
 					request.setAttribute("commentSuccess", "评论失败");
@@ -168,7 +183,7 @@ public class ArticleShowServlet extends HttpServlet {
 					page.setCurrentPage(currentPage);
 					//拿到数据集合，分页
 					List<Article> articleList = new ArrayList<Article>();
-					articleList = ass.queryMySearchArticleByPage(page, user.getUsername(), search);
+					articleList = ass.queryMySearchArticleByPage(page, user.getUsername(), HTMLUtil.HTMLEncod(search));
 					page.setObject(articleList);
 					//将数据传给request
 					request.setAttribute("p", page);
@@ -204,7 +219,7 @@ public class ArticleShowServlet extends HttpServlet {
 					page.setPageSize(5);                                        					//默认将页面大小设置为5
 					//拿到数据集合，分页
 					List<Article> articleList = new ArrayList<Article>();
-					articleList = ass.queryAllSearchArticleByPage(page, search,user.getUsername());
+					articleList = ass.queryAllSearchArticleByPage(page, HTMLUtil.HTMLEncod(search),user.getUsername());
 					page.setObject(articleList);
 					//将数据传给request
 					request.setAttribute("p", page);

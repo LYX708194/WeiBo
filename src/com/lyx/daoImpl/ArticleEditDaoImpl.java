@@ -378,7 +378,7 @@ public class ArticleEditDaoImpl implements ArticleEditDao{
 		Connection con = DbUtil.getConnection();
 		PreparedStatement pstmt = null;
 		try {
-			String sql = "delete from collect where articleid = ? and username = ?"  ;  //通过微博文章的id和收藏的用户删除
+			String sql = "delete from collect where articleid = ? and username = ? "  ;  //通过微博文章的id和收藏的用户删除
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, collect.getArticleId());
 			pstmt.setString(2, username);
@@ -468,9 +468,10 @@ public class ArticleEditDaoImpl implements ArticleEditDao{
 		Connection con = DbUtil.getConnection();
 		PreparedStatement pstmt = null;
 		try {
-			String sql = "delete from comment where commentid = ?"  ;  //通过评论的id删除
+			String sql = "delete from comment where commentid = ? or articleid = ?"  ;  //通过评论的id删除
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, comment.getCommentId());
+			pstmt.setInt(2, comment.getArticleId());  
 			int result = pstmt.executeUpdate();
 			if(result>0) {
 				return true;
@@ -560,9 +561,10 @@ public class ArticleEditDaoImpl implements ArticleEditDao{
 		Connection con = DbUtil.getConnection();
 		PreparedStatement pstmt = null;
 		try {
-			String sql = "delete from reply where replyid = ?"  ;  //通过replyid删除回复
+			String sql = "delete from reply where replyid = ? or articleid = ?"  ;  //通过replyid删除回复
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, reply.getReplyId());
+			pstmt.setInt(2, reply.getArticleId());
 			int result = pstmt.executeUpdate();
 			if(result>0) {
 				return true;

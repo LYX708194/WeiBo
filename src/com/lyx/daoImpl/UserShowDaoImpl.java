@@ -147,6 +147,32 @@ public class UserShowDaoImpl implements UserShowDao{
 		}
 		return userList;
 	}
+	
+	
+	@Override
+	public List<User> getAllUser() {
+		List<User> userList  = new ArrayList<User>();
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {  
+			String sql = "select * from user where userid != 1  " ;
+			pstmt = con.prepareStatement(sql);	
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				User user = new User();							//用于群发消息，只需要得到用户名即可
+				user.setUsername(rs.getString("username"));  						//用户名
+				
+				userList.add(user);          //将得到的数据封装成一个对象放入集合中
+			}
+			return userList;   
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(rs, pstmt, con);
+		}
+		return userList;
+	}
 
 	@Override
 	public List<User> getMyFocusByPage(Page page, User user) {

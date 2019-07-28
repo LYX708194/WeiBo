@@ -34,7 +34,10 @@ public class User {
 		
 		//此值与friend表中的status等同    	默认值为1，表示A关注B，2表示AB互粉
 		private int relation;   //好友关系，与数据库中的表无关，用于方便前端显示用户之间信息
-		
+		//最新的消息，用于消息功能展示两人间最新的消息
+		private String lastestMsg;
+		//未读消息数
+		private int unRead;
 		
 		public int getUserId() {
 			return userId;
@@ -115,7 +118,18 @@ public class User {
 		public void setRelation(int relation) {
 			this.relation = relation;
 		}
-		
+		public String getLastestMsg() {
+			return lastestMsg;
+		}
+		public void setLastestMsg(String lastestMsg) {
+			this.lastestMsg = lastestMsg;
+		}
+		public int getUnRead() {
+			return unRead;
+		}
+		public void setUnRead(int unRead) {
+			this.unRead = unRead;
+		}
 		public User() {
 			super();
 		}
@@ -144,8 +158,47 @@ public class User {
 					+ address + ", time=" + time + ", relation=" + relation + "]";
 		}
 		
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((email == null) ? 0 : email.hashCode());
+			result = prime * result + ((password == null) ? 0 : password.hashCode());
+			result = prime * result + userId;
+			result = prime * result + ((username == null) ? 0 : username.hashCode());
+			return result;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			User other = (User) obj;
+			if (email == null) {
+				if (other.email != null)
+					return false;
+			} else if (!email.equals(other.email))
+				return false;
+			if (password == null) {
+				if (other.password != null)
+					return false;
+			} else if (!password.equals(other.password))
+				return false;
+			if (userId != other.userId)
+				return false;
+			if (username == null) {
+				if (other.username != null)
+					return false;
+			} else if (!username.equals(other.username))
+				return false;
+			return true;
+		}
 		
 		
-
+		
+		
 
 }

@@ -77,6 +77,13 @@ public interface UserDao {
 		public int getUserStatus(String username);
 		
 		/**
+		 * 得到用户的头像
+		 * @param username
+		 * @return
+		 */
+		public String getUserPortrait(String username);
+		
+		/**
 		 * 封号
 		 * @param username
 		 * @return 成功返回true，失败返回false

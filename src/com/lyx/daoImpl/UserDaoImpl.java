@@ -243,6 +243,29 @@ public class UserDaoImpl implements UserDao{
 		return user;
 	}
 	
+	@Override
+	public String getUserPortrait(String username) {
+		String portrait = null;
+		Connection con = DbUtil.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;		
+		try {
+			String sql = "select portrait from user where username = ?" ;
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1,username);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				portrait =rs.getString(1);
+			}
+			return portrait;   
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DbUtil.close(rs, pstmt, con);
+		} 
+		return portrait;
+	}
+	
 	/**
 	 * 查找数据库是否存在此对象，判断是否重复
 	 * 若存在则返回真，不存在返回假
@@ -358,6 +381,8 @@ public class UserDaoImpl implements UserDao{
 		return status;
 	}
 
+	
+	
 	@Override
 	public boolean updateRelation(String fromUsername, String toUsername, int status) {
 		Connection con = DbUtil.getConnection();

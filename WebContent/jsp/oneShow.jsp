@@ -30,9 +30,9 @@
 					<a href="/WeiBo/UserShowServlet?method=myfocus">我的关注</a>
 					<a href="/WeiBo/UserShowServlet?method=myfans">我的粉丝</a>
 					<!-- 如果为管理员，则可查看所有人，进行操作 -->
-					<c:if test='${sessionScope.userInfo.username=="admin"}'>
+					
 					<a href="/WeiBo/UserShowServlet?method=all" >所有用户</a>
-					</c:if>
+					
 					<!-- 先跳转servlet 查询第一页的所有人信息 -->
 					<!-- 编辑文章 -->
 					<a href="/WeiBo/jsp/articleEdit.jsp" >写微博</a>
@@ -57,7 +57,7 @@
 							<div class="navbar">
 								<ul>
 									<li><a href="/WeiBo/jsp/self.jsp">我的主页</a></li>
-									<li><a href="#">消息</a></li>
+									<li><a href="/WeiBo/MessageListServlet">消息</a></li>
 									<li><a href="/WeiBo/jsp/update.jsp">修改个人信息</a></li>
 									<li><a href="/WeiBo/jsp/updatePwd.jsp">修改密码</a></li>
 									<li><a href="/WeiBo/ArticleShowServlet?method=all">发现微博</a></li>

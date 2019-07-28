@@ -37,7 +37,14 @@ public class ArticleEditService {
 		 * @return 成功返回真，失败返回假
 		 */
 		public boolean articleDelete(Article article) {
-			if(aed.articleQuery(article)) {
+			if(aed.articleQuery(article)) {  //删除文章则将文章的评论的点赞收藏信息都删除
+				Comment comment = new Comment();
+				Reply reply = new Reply();
+				comment.setArticleId(article.getArticleId());
+				reply.setArticleId(article.getArticleId());
+				aed.deleteComment(comment);
+				aed.articleDeleteComment(article);
+				aed.deleteReply(reply);
 				return  aed.articleDelete(article);  //查到已有此文章，进行删除
 			}else {
 				return false;  //查不到这篇文章，删除失败
@@ -159,10 +166,10 @@ public class ArticleEditService {
 		 * @param artilce
 		 * @return 成功返回真，失败返回假
 		 */
-		public boolean deleteComment(Comment comment,Article artilce) {
+		public boolean deleteComment(Comment comment,Article article) {
 			if(aed.queryComment(comment.getCommentId())) {
 				if(aed.deleteComment(comment)) {
-					return aed.articleDeleteComment(artilce);
+					return aed.articleDeleteComment(article);
 				}
 			}
 			return false;

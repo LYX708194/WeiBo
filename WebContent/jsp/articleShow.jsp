@@ -47,7 +47,7 @@
 							<div class="navbar">
 								<ul>
 									<li><a href="/WeiBo/jsp/self.jsp">我的主页</a></li>
-									<li><a href="#">消息</a></li>
+									<li><a href="/WeiBo/MessageListServlet">消息</a></li>
 									<li><a href="/WeiBo/jsp/update.jsp">修改个人信息</a></li>
 									<li><a href="/WeiBo/jsp/updatePwd.jsp">修改密码</a></li>
 									<li><a href="/WeiBo/ArticleShowServlet?method=all">发现微博</a></li>
@@ -90,7 +90,7 @@
 									<c:if test="${requestScope.user1.relation==1||requestScope.user1.relation==2 }"><!-- 为互粉关系或者关注关系 -->
 									<a href="UserShowServlet?premethod=unfocus&method=${requestScope.method}&this=${requestScope.user1.username}&currentPage=1&back=article" onclick= "return confirm('确定你要取消关注ta吗')">取消关注</a>
 									</c:if>
-								<a href="#" >发送私信</a></div>
+								<a href="SendMessageServlet?thisUser=${requestScope.user1.username }" >发送私信</a></div>
 								
 					</div>
 					<hr>

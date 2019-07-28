@@ -17,6 +17,7 @@ import com.lyx.entity.Page;
 import com.lyx.entity.User;
 import com.lyx.service.UserService;
 import com.lyx.service.UserShowService;
+import com.lyx.util.HTMLUtil;
 
 /**
  * 用户的展示，可进行关注/取消关注的操作，管理员可进行封号的操作
@@ -157,7 +158,7 @@ public class UserShowServlet extends HttpServlet {
 					Page page = new Page(10, totalCount, currentPage);  //设置页面大小为10个人
 					//获得user并分页
 					List<User> users = new ArrayList<User>();
-					users = uss.getSearchUserByPage(page, user, searchMsg);
+					users = uss.getSearchUserByPage(page, user, HTMLUtil.HTMLEncod(searchMsg));
 					//加入对象中
 					page.setUsers(users);
 					//将数据传给request

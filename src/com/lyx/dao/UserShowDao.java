@@ -47,6 +47,13 @@ public interface UserShowDao {
 	public List<User> getAllUserByPage(Page page,String username);
 	
 	/**
+	 * 获得所有用户
+	 * @return 成功返回一个对象集合，失败返回空
+	 */
+	public  List<User> getAllUser();
+	
+	
+	/**
 	 * 获得我的关注的用户集合并分页
 	 * @param page
 	 * @param username
